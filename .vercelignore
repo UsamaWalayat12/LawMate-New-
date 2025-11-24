@@ -1,0 +1,14 @@
+# Vercel Ignore File
+.git
+.env
+.venv
+venv
+__pycache__
+*.pyc
+*.pdf
+*.log
+tmp
+temp
+node_modules
+# If ChromaDB is too large (>250MB), uncomment the next line and use an external DB
+# ChromaDB

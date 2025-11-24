@@ -1,0 +1,31 @@
+# Git Ignore File
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.DS_Store
+.env
+tmp/
+temp/
+node_modules/
+
+# Local PDF files (generated)
+*.pdf
+
+# Large DB files (optional - if you want to keep repo small)
+# ChromaDB/
