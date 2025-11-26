@@ -92,13 +92,12 @@ try:
         
         try:
             # Use HttpClient for Chroma Cloud with proper v1.3.5 API
-            # Pass API key as header for authentication
+            # Build the full URL with tenant and database
+            chroma_url = f"https://api.trychroma.com/v1/tenants/{CHROMA_TENANT}/databases/{CHROMA_DATABASE}"
             client_chroma = chromadb.HttpClient(
                 host="api.trychroma.com",
                 port=443,
                 ssl=True,
-                tenant_name=CHROMA_TENANT,
-                database_name=CHROMA_DATABASE,
                 headers={"Authorization": f"Bearer {CHROMA_API_KEY}"}
             )
             print(f"  ✓ HttpClient created successfully (v1.3.5 API)")
