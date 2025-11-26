@@ -118,23 +118,6 @@ try:
         client_chroma = chromadb.PersistentClient(path=DB_DIR)
         col = client_chroma.get_collection(COLLECTION)
         print("✓ Local ChromaDB connected successfully")
-    else:
-        print(f"WARNING: No ChromaDB connection available!")
-        print(f"  - No Chroma Cloud env vars")
-        print(f"  - No local DB at: {DB_DIR}")
-        client_chroma = None
-        col = None
-except Exception as e:
-    print(f"ERROR connecting to ChromaDB: {e}")
-    import traceback
-    traceback.print_exc()
-    client_chroma = None
-    col = None
-
-print("=" * 60)
-
-# ---------------------------
-# Configure Gemini from environment and instantiate client
 # ---------------------------
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
