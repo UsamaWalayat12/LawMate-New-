@@ -33,10 +33,10 @@ except Exception:
 # Use environment variable for DB path, default to relative "ChromaDB"
 DB_DIR = os.environ.get("CHROMA_DB_DIR", "ChromaDB")
 COLLECTION = "pakistan_law"
-MODEL_NAME = "all-mpnet-base-v2"     # embedding model used at ingest
+MODEL_NAME = "all-MiniLM-L6-v2"     # MUST match the model used in Chroma Cloud
 TOP_K = 20
 RETURN_TOP = 5
-DEBUG = False
+DEBUG = True  # Enable debug mode to see what's happening
 
 KEYWORD_BOOST = ["notice", "demand", "breach", "contract", "claim", "payment", "overdue"]
 PRIORITY_PHRASES = [
