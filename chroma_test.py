@@ -90,12 +90,20 @@ try:
         print(f"  Database: {CHROMA_DATABASE}")
         print(f"  Attempting cloud connection...")
         
-        client_chroma = chromadb.CloudClient(
-            api_key=CHROMA_API_KEY,
+        # Use HttpClient with TokenAuth for Chroma Cloud (v2 API)
+        from chromadb.config import Settings
+        client_chroma = chromadb.HttpClient(
+            host='api.trychroma.com',
+            port=8000,
+            ssl=True,
             tenant=CHROMA_TENANT,
-            database=CHROMA_DATABASE
+            database=CHROMA_DATABASE,
+            settings=Settings(
+                chroma_client_auth_provider="chromadb.auth.token.TokenAuthClientProvider",
+                chroma_client_auth_credentials=CHROMA_API_KEY
+            )
         )
-        print(f"  ✓ CloudClient created")
+        print(f"  ✓ HttpClient created (v2 API)")
         
         col = client_chroma.get_collection(COLLECTION)
         print(f"  ✓ Collection '{COLLECTION}' retrieved")
