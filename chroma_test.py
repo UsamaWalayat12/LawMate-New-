@@ -98,8 +98,7 @@ try:
             ssl=True,
             tenant=CHROMA_TENANT,
             database=CHROMA_DATABASE,
-            headers={'X-Chroma-Token': CHROMA_API_KEY},
-            settings=Settings(anonymized_telemetry=False)
+            headers={'X-Chroma-Token': CHROMA_API_KEY}
         )
         print(f"  ✓ HttpClient created (v2 API) with headers")
         
