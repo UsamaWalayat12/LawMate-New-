@@ -53,21 +53,15 @@ GEMINI_MODEL = os.environ.get("GEMINI_MODEL") or "models/gemini-2.5-flash"
 # ---------------------------
 # Initialize embedding model (only if not using Chroma Cloud)
 # ---------------------------
-# Check if using Chroma Cloud (which handles embeddings for us)
-USING_CHROMA_CLOUD = bool(os.environ.get("CHROMA_API_KEY"))
-
-if USING_CHROMA_CLOUD:
-    print("Using Chroma Cloud - skipping local embedding model")
+# Always load embedding model (needed for both local and cloud)
+print("Loading embedding model:", MODEL_NAME)
+try:
+    from sentence_transformers import SentenceTransformer
+    model = SentenceTransformer(MODEL_NAME)
+    print(f"✓ Loaded embedding model: {MODEL_NAME}")
+except Exception as e:
+    print(f"Warning: Could not load SentenceTransformer: {e}")
     model = None
-else:
-    print("Loading embedding model:", MODEL_NAME)
-    try:
-        from sentence_transformers import SentenceTransformer
-        model = SentenceTransformer(MODEL_NAME)
-        print(f"✓ Loaded embedding model: {MODEL_NAME}")
-    except Exception as e:
-        print(f"Warning: Could not load SentenceTransformer: {e}")
-        model = None
 
 print("=" * 60)
 print("CHROMA CONNECTION DIAGNOSTIC")
@@ -196,10 +190,14 @@ def retrieve_and_filter(query: str,
     
     try:
         if using_cloud:
-            # Chroma Cloud: Use text query directly (cloud handles embeddings)
-            print(f"[DEBUG] Using Chroma Cloud text query: {query[:50]}...")
+            # Chroma Cloud: Still need to generate embeddings locally
+            if model is None:
+                print("Error: Model not initialized for Chroma Cloud.")
+                return []
+            print(f"[DEBUG] Using Chroma Cloud with embeddings: {query[:50]}...")
+            q_emb = model.encode(query, convert_to_numpy=True).tolist()
             res = col.query(
-                query_texts=[query],
+                query_embeddings=[q_emb],
                 n_results=top_k,
                 include=['documents', 'metadatas', 'distances']
             )
