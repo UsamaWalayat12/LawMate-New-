@@ -91,14 +91,15 @@ try:
         print(f"  Attempting cloud connection...")
         
         # Use HttpClient with direct headers for Chroma Cloud (v2 API)
-        # This avoids issues with finding the specific auth provider module
+        # Remove port 8000 (defaults to 443 for SSL) and add explicit Settings
+        from chromadb.config import Settings
         client_chroma = chromadb.HttpClient(
             host='api.trychroma.com',
-            port=8000,
             ssl=True,
             tenant=CHROMA_TENANT,
             database=CHROMA_DATABASE,
-            headers={'X-Chroma-Token': CHROMA_API_KEY}
+            headers={'X-Chroma-Token': CHROMA_API_KEY},
+            settings=Settings(anonymized_telemetry=False)
         )
         print(f"  ✓ HttpClient created (v2 API) with headers")
         
