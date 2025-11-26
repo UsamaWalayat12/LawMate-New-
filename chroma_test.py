@@ -144,7 +144,7 @@ if genai is None:
     sys.exit(1)
 
 try:
-    client = genai.Client()  # uses GEMINI_API_KEY from env
+    client = genai.Client(api_key=GEMINI_API_KEY)  # Explicitly pass API key
 except Exception as e:
     print("Failed to instantiate google-genai client:", e)
     sys.exit(1)
