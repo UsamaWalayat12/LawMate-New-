@@ -130,6 +130,11 @@ except Exception as e:
     traceback.print_exc()
     client_chroma = None
     col = None
+
+# ---------------------------
+# Configure Gemini from environment and instantiate client
+# ---------------------------
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
     print("ERROR: GEMINI_API_KEY not set in environment. Set it and re-run.")
     sys.exit(1)
