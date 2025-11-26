@@ -91,16 +91,13 @@ try:
         print(f"  Attempting cloud connection...")
         
         try:
-            # Use HttpClient for Chroma Cloud with proper v1.3.5 API
-            # Build the full URL with tenant and database
-            chroma_url = f"https://api.trychroma.com/v1/tenants/{CHROMA_TENANT}/databases/{CHROMA_DATABASE}"
-            client_chroma = chromadb.HttpClient(
-                host="api.trychroma.com",
-                port=443,
-                ssl=True,
-                headers={"Authorization": f"Bearer {CHROMA_API_KEY}"}
+            # Use CloudClient for Chroma Cloud with proper v1.3.5 API
+            client_chroma = chromadb.CloudClient(
+                api_key=CHROMA_API_KEY,
+                tenant=CHROMA_TENANT,
+                database=CHROMA_DATABASE
             )
-            print(f"  ✓ HttpClient created successfully (v1.3.5 API)")
+            print(f"  ✓ CloudClient created successfully (v1.3.5 API)")
             
             col = client_chroma.get_or_create_collection(
                 name=COLLECTION
