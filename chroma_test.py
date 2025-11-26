@@ -15,7 +15,7 @@ import json
 import re
 from typing import List, Dict, Any
 
-from sentence_transformers import SentenceTransformer
+# sentence_transformers imported conditionally below (only if not using Chroma Cloud)
 import chromadb
 
 # Gemini (google-genai) client
@@ -51,30 +51,82 @@ EXCERPT_CHAR_LIMIT = 1200
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL") or "models/gemini-2.5-flash"
 
 # ---------------------------
-# Initialize embedding model and Chroma DB
+# Initialize embedding model (only if not using Chroma Cloud)
 # ---------------------------
-print("Loading embedding model:", MODEL_NAME)
-try:
-    model = SentenceTransformer(MODEL_NAME)
-except Exception as e:
-    print(f"Warning: Could not load SentenceTransformer: {e}")
-    model = None
+# Check if using Chroma Cloud (which handles embeddings for us)
+USING_CHROMA_CLOUD = bool(os.environ.get("CHROMA_API_KEY"))
 
-print("Connecting to ChromaDB at:", DB_DIR)
+if USING_CHROMA_CLOUD:
+    print("Using Chroma Cloud - skipping local embedding model")
+    model = None
+else:
+    print("Loading embedding model:", MODEL_NAME)
+    try:
+        from sentence_transformers import SentenceTransformer
+        model = SentenceTransformer(MODEL_NAME)
+        print(f"✓ Loaded embedding model: {MODEL_NAME}")
+    except Exception as e:
+        print(f"Warning: Could not load SentenceTransformer: {e}")
+        model = None
+
+print("=" * 60)
+print("CHROMA CONNECTION DIAGNOSTIC")
+print("=" * 60)
+print("Connecting to ChromaDB...")
+
+# Check environment variables
+CHROMA_API_KEY = os.environ.get("CHROMA_API_KEY")
+CHROMA_TENANT = os.environ.get("CHROMA_TENANT")
+CHROMA_DATABASE = os.environ.get("CHROMA_DATABASE")
+
+print(f"CHROMA_API_KEY present: {bool(CHROMA_API_KEY)}")
+print(f"CHROMA_TENANT present: {bool(CHROMA_TENANT)}")
+print(f"CHROMA_DATABASE present: {bool(CHROMA_DATABASE)}")
+
 try:
-    # Check if DB directory exists
-    if os.path.exists(DB_DIR):
+    if CHROMA_API_KEY and CHROMA_TENANT and CHROMA_DATABASE:
+        print(f"✓ All Chroma Cloud env vars found!")
+        print(f"  Tenant: {CHROMA_TENANT}")
+        print(f"  Database: {CHROMA_DATABASE}")
+        print(f"  Attempting cloud connection...")
+        
+        client_chroma = chromadb.CloudClient(
+            api_key=CHROMA_API_KEY,
+            tenant=CHROMA_TENANT,
+            database=CHROMA_DATABASE
+        )
+        print(f"  ✓ CloudClient created")
+        
+        col = client_chroma.get_collection(COLLECTION)
+        print(f"  ✓ Collection '{COLLECTION}' retrieved")
+        
+        # Test count
+        try:
+            count = col.count()
+            print(f"  ✓ Chroma Cloud connected! Documents: {count}")
+        except:
+            print(f"  ✓ Chroma Cloud connected (count unavailable)")
+            
+    # Fallback to local ChromaDB (for development)
+    elif os.path.exists(DB_DIR):
+        print(f"Using local ChromaDB at: {DB_DIR}")
         client_chroma = chromadb.PersistentClient(path=DB_DIR)
         col = client_chroma.get_collection(COLLECTION)
-        print("✓ ChromaDB connected successfully")
+        print("✓ Local ChromaDB connected successfully")
     else:
-        print(f"Warning: ChromaDB directory '{DB_DIR}' not found. RAG features will be disabled.")
+        print(f"WARNING: No ChromaDB connection available!")
+        print(f"  - No Chroma Cloud env vars")
+        print(f"  - No local DB at: {DB_DIR}")
         client_chroma = None
         col = None
 except Exception as e:
-    print(f"Error connecting to ChromaDB: {e}")
+    print(f"ERROR connecting to ChromaDB: {e}")
+    import traceback
+    traceback.print_exc()
     client_chroma = None
     col = None
+
+print("=" * 60)
 
 # ---------------------------
 # Configure Gemini from environment and instantiate client
@@ -121,19 +173,46 @@ def retrieve_and_filter(query: str,
                         top_k: int = TOP_K,
                         keyword_boost: List[str] = KEYWORD_BOOST,
                         return_top: int = RETURN_TOP) -> List[Dict[str, Any]]:
-    if model is None or col is None:
-        print("Error: Model or Collection not initialized.")
+    if col is None:
+        print("Error: Collection not initialized.")
         return []
 
-    q_emb = model.encode(query, convert_to_numpy=True).tolist()
-
     include = ['documents', 'metadatas', 'distances', 'data']
+    
+    # Check if using Chroma Cloud (no local model needed)
+    CHROMA_API_KEY = os.environ.get("CHROMA_API_KEY")
+    using_cloud = CHROMA_API_KEY is not None
+    
     try:
-        res = col.query(query_embeddings=[q_emb], n_results=top_k, include=include)
+        if using_cloud:
+            # Chroma Cloud: Use text query directly (cloud handles embeddings)
+            print(f"[DEBUG] Using Chroma Cloud text query: {query[:50]}...")
+            res = col.query(
+                query_texts=[query],
+                n_results=top_k,
+                include=['documents', 'metadatas', 'distances']
+            )
+        else:
+            # Local ChromaDB: Use embeddings
+            if model is None:
+                print("Error: Model not initialized for local ChromaDB.")
+                return []
+            print(f"[DEBUG] Using local ChromaDB with embeddings: {query[:50]}...")
+            q_emb = model.encode(query, convert_to_numpy=True).tolist()
+            res = col.query(query_embeddings=[q_emb], n_results=top_k, include=include)
     except Exception as e:
         if DEBUG:
-            print("Chroma query with 'data' include failed:", e)
-        res = col.query(query_embeddings=[q_emb], n_results=top_k, include=['documents', 'metadatas', 'distances'])
+            print("Chroma query failed:", e)
+        # Fallback for local
+        if not using_cloud and model is not None:
+            try:
+                q_emb = model.encode(query, convert_to_numpy=True).tolist()
+                res = col.query(query_embeddings=[q_emb], n_results=top_k, include=['documents', 'metadatas', 'distances'])
+            except Exception as e2:
+                print(f"Fallback query also failed: {e2}")
+                return []
+        else:
+            return []
 
     if DEBUG:
         print("chroma keys:", list(res.keys()))
@@ -200,14 +279,38 @@ def retrieve_and_filter(query: str,
 
     candidates = sorted(candidates, key=lambda x: (-x['p_score'], -x['kw'], x['dist']))
 
+    # Apply filters with more lenient criteria
     filtered = []
+    MIN_LENGTH = 50  # Reduced from 200 to be more lenient
+    
     for c in candidates:
-        if c['len'] < 200:
+        # Filter out very short documents (< 50 chars)
+        if c['len'] < MIN_LENGTH:
+            if DEBUG:
+                print(f"[FILTER] Skipped doc (too short): {c['len']} chars")
             continue
+        
+        # Allow English, unknown, or missing language metadata
         lang = str(c['meta'].get('lang', 'en')).lower()
-        if lang and not lang.startswith('en') and lang != 'unknown':
+        if lang and not lang.startswith('en') and lang != 'unknown' and lang != '':
+            if DEBUG:
+                print(f"[FILTER] Skipped doc (non-English): lang={lang}")
             continue
+        
         filtered.append(c)
+    
+    # Fallback: if all documents were filtered out, return top unfiltered candidates
+    if len(filtered) == 0 and len(candidates) > 0:
+        print(f"WARNING: All {len(candidates)} documents were filtered out. Returning top {return_top} unfiltered results.")
+        # Return candidates that are at least somewhat relevant (not empty)
+        fallback = [c for c in candidates if c['len'] > 0][:return_top]
+        if DEBUG:
+            for c in fallback:
+                print(f"[FALLBACK] Returning: len={c['len']}, lang={c['meta'].get('lang', 'unknown')}, dist={c['dist']:.4f}")
+        return fallback
+
+    if DEBUG and len(filtered) > 0:
+        print(f"[FILTER] Kept {len(filtered)}/{len(candidates)} documents after filtering")
 
     return filtered[:return_top]
 

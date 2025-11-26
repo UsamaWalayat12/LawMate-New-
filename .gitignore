@@ -27,5 +27,6 @@ node_modules/
 # Local PDF files (generated)
 *.pdf
 
-# Large DB files (optional - if you want to keep repo small)
-# ChromaDB/
+# Large DB files - TOO LARGE FOR RAILWAY UPLOAD (500MB limit)
+# Use Railway Volume or Cloud Database instead
+ChromaDB/

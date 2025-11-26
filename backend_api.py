@@ -35,6 +35,16 @@ except ImportError as e:
     GEMINI_MODEL = "models/gemini-2.5-flash"
     TOP_K = 10
     RETURN_TOP = 5
+    
+    # Dummy functions to prevent NameError
+    def retrieve_and_filter(*args, **kwargs): return []
+    def call_gemini_chat(prompt, *args, **kwargs): return "RAG is unavailable (Serverless Mode). Please configure a cloud database."
+    def build_strict_rag_prompt(*args, **kwargs): return ""
+    def load_history(): return []
+    def save_history(*args, **kwargs): pass
+    def add_to_history(*args, **kwargs): pass
+    def generate_pdf_from_history(*args, **kwargs): return None
+    def extract_case_metadata(*args, **kwargs): return {}
 
 # Create FastAPI app
 app = FastAPI(
@@ -143,16 +153,36 @@ async def chat(request: ChatRequest):
         add_to_history(history, "user", query)
         
         # Retrieve evidence
+        print(f"[API] Processing query: {query[:100]}...")
         evidences = retrieve_and_filter(query, top_k=TOP_K, return_top=RETURN_TOP)
+        print(f"[API] Retrieved {len(evidences)} evidence documents")
         
         if len(evidences) == 0:
-            answer = "I couldn't find relevant evidence in the legal database for your query. Please try rephrasing your question or ask about Pakistani legal topics."
+            # Log the issue for debugging
+            print(f"[API] WARNING: No evidence found for query: {query}")
+            
+            # Provide a more helpful error message
+            answer = (
+                "I apologize, but I couldn't find specific legal documents matching your query in the database. "
+                "This could mean:\n\n"
+                "1. The query might need to be rephrased\n"
+                "2. The specific legal topic might not be in the current database\n"
+                "3. Try using different keywords or asking about general Pakistani legal topics\n\n"
+                "You can try asking about:\n"
+                "- Contract law and breach of contract\n"
+                "- Property and land transfer procedures\n"
+                "- Employment law and labor rights\n"
+                "- Legal notices and documentation\n"
+                "- Court procedures and judgments"
+            )
         else:
             # Build prompt
             prompt = build_strict_rag_prompt(query, evidences)
             
             # Get AI response
+            print(f"[API] Calling Gemini AI...")
             answer = call_gemini_chat(prompt, model=GEMINI_MODEL, temperature=0.0, max_tokens=2000)
+            print(f"[API] Received AI response ({len(answer)} chars)")
         
         # Add assistant response to history
         add_to_history(history, "assistant", answer)
@@ -169,7 +199,9 @@ async def chat(request: ChatRequest):
         }
         
     except Exception as e:
-        print(f"Error in chat endpoint: {e}")
+        print(f"[API] Error in chat endpoint: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")
 
 # Get history endpoint
