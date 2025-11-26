@@ -90,34 +90,46 @@ try:
         print(f"  Database: {CHROMA_DATABASE}")
         print(f"  Attempting cloud connection...")
         
-        # Use HttpClient with direct headers for Chroma Cloud (v2 API)
-        # Remove port 8000 (defaults to 443 for SSL) and add explicit Settings
-        from chromadb.config import Settings
-        client_chroma = chromadb.HttpClient(
-            host='api.trychroma.com',
-            ssl=True,
-            tenant=CHROMA_TENANT,
-            database=CHROMA_DATABASE,
-            headers={'X-Chroma-Token': CHROMA_API_KEY}
-        )
-        print(f"  ✓ HttpClient created (v2 API) with headers")
-        
-        col = client_chroma.get_collection(COLLECTION)
-        print(f"  ✓ Collection '{COLLECTION}' retrieved")
-        
-        # Test count
         try:
-            count = col.count()
-            print(f"  ✓ Chroma Cloud connected! Documents: {count}")
-        except:
-            print(f"  ✓ Chroma Cloud connected (count unavailable)")
+            # Use HttpClient for Chroma Cloud with proper v1.3.4 API
+            # Note: auth_credentials parameter requires proper format for v1.3.4
+            client_chroma = chromadb.HttpClient(
+                host="api.trychroma.com",
+                port=443,
+                ssl=True,
+                tenant_name=CHROMA_TENANT,
+                database_name=CHROMA_DATABASE,
+                auth_credentials=chromadb.auth.AuthToken(token=CHROMA_API_KEY)
+            )
+            print(f"  ✓ HttpClient created successfully (v1.3.4 API)")
             
-    # Fallback to local ChromaDB (for development)
+            col = client_chroma.get_or_create_collection(
+                name=COLLECTION
+            )
+
+            print(f"  ✓ Collection '{COLLECTION}' connected (cloud)")
+
+            
+            # Test count
+            try:
+                count = col.count()
+                print(f"  ✓ Chroma Cloud connected! Documents: {count}")
+            except Exception as e:
+                print(f"  ✓ Cloud connection OK (count not available): {e}")
+        except Exception as cloud_error:
+            print(f"  ✗ Chroma Cloud connection failed: {cloud_error}")
+            raise cloud_error
+            
+    # Fallback to local ChromaDB (for development only, NOT when cloud vars are set)
     elif os.path.exists(DB_DIR):
         print(f"Using local ChromaDB at: {DB_DIR}")
-        client_chroma = chromadb.PersistentClient(path=DB_DIR)
-        col = client_chroma.get_collection(COLLECTION)
-        print("✓ Local ChromaDB connected successfully")
+        try:
+            client_chroma = chromadb.PersistentClient(path=DB_DIR)
+            col = client_chroma.get_or_create_collection(COLLECTION)
+            print("✓ Local ChromaDB connected successfully")
+        except Exception as local_error:
+            print(f"  ✗ Local ChromaDB connection failed: {local_error}")
+            raise local_error
     else:
         print(f"WARNING: No ChromaDB connection available!")
         print(f"  - No Chroma Cloud env vars")
