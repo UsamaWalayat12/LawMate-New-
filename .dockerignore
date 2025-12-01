@@ -26,6 +26,15 @@ Thumbs.db
 New-Legal-Connect/
 *.apk
 *.aab
+android/
+ios/
+windows/
+linux/
+macos/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
 
 # Logs
 *.log
@@ -39,3 +48,14 @@ temp/
 ChromaDB/
 venv/
 .venv/
+
+# Test files
+test_*.py
+*_test.py
+*.pdf
+
+# Large data files
+chat_history.json
+
+# Batch scripts
+*.bat
