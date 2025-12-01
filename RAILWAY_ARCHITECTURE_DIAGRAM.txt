@@ -1,0 +1,391 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                      RAILWAY DEPLOYMENT ARCHITECTURE                       ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+DEPLOYMENT FLOW
+═════════════════════════════════════════════════════════════════════════════
+
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                      GitHub Repository                          │
+    │                    (Your Code & Config)                         │
+    └────────────────────────┬────────────────────────────────────────┘
+                             │
+                             │ Push to main branch
+                             ↓
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    Railway Webhook                              │
+    │              (Auto-triggered on GitHub push)                    │
+    └────────────────────────┬────────────────────────────────────────┘
+                             │
+                             │ Trigger build
+                             ↓
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    Build Stage                                  │
+    │  ┌──────────────────────────────────────────────────────────┐  │
+    │  │ 1. Clone repository                                      │  │
+    │  │ 2. Read Dockerfile                                       │  │
+    │  │ 3. Install system dependencies (gcc, g++)               │  │
+    │  │ 4. Install Python dependencies (pip install)            │  │
+    │  │ 5. Copy application files                               │  │
+    │  │ 6. Create necessary directories                         │  │
+    │  └──────────────────────────────────────────────────────────┘  │
+    └────────────────────────┬────────────────────────────────────────┘
+                             │
+                             │ Build complete
+                             ↓
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    Deploy Stage                                 │
+    │  ┌──────────────────────────────────────────────────────────┐  │
+    │  │ 1. Start service                                         │  │
+    │  │ 2. Run: python backend_api.py                           │  │
+    │  │ 3. Listen on PORT 8000                                  │  │
+    │  │ 4. Load environment variables                           │  │
+    │  └──────────────────────────────────────────────────────────┘  │
+    └────────────────────────┬────────────────────────────────────────┘
+                             │
+                             │ Service starting
+                             ↓
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    Health Check                                 │
+    │  ┌──────────────────────────────────────────────────────────┐  │
+    │  │ Every 30 seconds:                                        │  │
+    │  │ GET /health                                              │  │
+    │  │ Expected: {"status": "healthy"}                         │  │
+    │  │ Timeout: 10 seconds                                     │  │
+    │  └──────────────────────────────────────────────────────────┘  │
+    └────────────────────────┬────────────────────────────────────────┘
+                             │
+                             │ Health check passed
+                             ↓
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    Running Service                              │
+    │              (Ready to accept requests)                         │
+    │                                                                 │
+    │  URL: https://lawmate-new.up.railway.app                       │
+    └─────────────────────────────────────────────────────────────────┘
+
+
+SERVICE ARCHITECTURE
+═════════════════════════════════════════════════════════════════════════════
+
+    ┌──────────────────────────────────────────────────────────────────┐
+    │                   Railway Service                                │
+    │                                                                  │
+    │  ┌────────────────────────────────────────────────────────────┐ │
+    │  │              FastAPI Application                           │ │
+    │  │         (backend_api.py - Port 8000)                       │ │
+    │  │                                                            │ │
+    │  │  ┌──────────────────────────────────────────────────────┐ │ │
+    │  │  │  API Endpoints:                                      │ │ │
+    │  │  │  • GET  /health                                      │ │ │
+    │  │  │  • GET  /api/status                                  │ │ │
+    │  │  │  • POST /api/chat                                    │ │ │
+    │  │  │  • GET  /api/history                                 │ │ │
+    │  │  │  • DELETE /api/history/clear                         │ │ │
+    │  │  │  • POST /api/generate-pdf                            │ │ │
+    │  │  └──────────────────────────────────────────────────────┘ │ │
+    │  │                                                            │ │
+    │  │  ┌──────────────────────────────────────────────────────┐ │ │
+    │  │  │  RAG Pipeline (chroma_test.py):                      │ │ │
+    │  │  │  • retrieve_and_filter()                             │ │ │
+    │  │  │  • call_gemini_chat()                                │ │ │
+    │  │  │  • build_strict_rag_prompt()                         │ │ │
+    │  │  │  • generate_pdf_from_history()                       │ │ │
+    │  │  └──────────────────────────────────────────────────────┘ │ │
+    │  └────────────────────────────────────────────────────────────┘ │
+    │                          │                                       │
+    │                          │ HTTP Requests                         │
+    │                          ↓                                       │
+    │  ┌────────────────────────────────────────────────────────────┐ │
+    │  │              External Services                             │ │
+    │  │                                                            │ │
+    │  │  ┌──────────────────┐      ┌──────────────────────────┐  │ │
+    │  │  │  Chroma Cloud    │      │  Google Gemini API       │  │ │
+    │  │  │  (ChromaDB)      │      │  (AI Model)              │  │ │
+    │  │  │                  │      │                          │  │ │
+    │  │  │ • Query docs     │      │ • Generate responses     │  │ │
+    │  │  │ • Retrieve RAG   │      │ • Chat completion        │  │ │
+    │  │  │ • Store vectors  │      │ • Embeddings             │  │ │
+    │  │  └──────────────────┘      └──────────────────────────┘  │ │
+    │  └────────────────────────────────────────────────────────────┘ │
+    └──────────────────────────────────────────────────────────────────┘
+
+
+DATA FLOW
+═════════════════════════════════════════════════════════════════════════════
+
+    User Request
+         │
+         ↓
+    ┌─────────────────────────────────────────┐
+    │  POST /api/chat                         │
+    │  {"message": "What is the law?"}        │
+    └─────────────────────────────────────────┘
+         │
+         ↓
+    ┌─────────────────────────────────────────┐
+    │  FastAPI Route Handler                  │
+    │  • Validate input                       │
+    │  • Parse message                        │
+    │  • Determine mode (yes_no/detailed)     │
+    └─────────────────────────────────────────┘
+         │
+         ↓
+    ┌─────────────────────────────────────────┐
+    │  RAG Pipeline                           │
+    │  1. Generate query embedding            │
+    │  2. Query Chroma Cloud                  │
+    │  3. Retrieve relevant documents         │
+    │  4. Filter results (TOP_K=10)           │
+    │  5. Return top results (RETURN_TOP=5)   │
+    └─────────────────────────────────────────┘
+         │
+         ↓
+    ┌─────────────────────────────────────────┐
+    │  Build Prompt                           │
+    │  • System prompt                        │
+    │  • Retrieved documents                  │
+    │  • User question                        │
+    │  • Mode-specific instructions           │
+    └─────────────────────────────────────────┘
+         │
+         ↓
+    ┌─────────────────────────────────────────┐
+    │  Call Google Gemini API                 │
+    │  • Send prompt                          │
+    │  • Get AI response                      │
+    │  • Stream or return response            │
+    └─────────────────────────────────────────┘
+         │
+         ↓
+    ┌─────────────────────────────────────────┐
+    │  Post-Process Response                  │
+    │  • Extract answer                       │
+    │  • Format sources                       │
+    │  • Add metadata                         │
+    │  • Save to history                      │
+    └─────────────────────────────────────────┘
+         │
+         ↓
+    ┌─────────────────────────────────────────┐
+    │  Return Response                        │
+    │  {                                      │
+    │    "response": "...",                   │
+    │    "sources": [...],                    │
+    │    "timestamp": "..."                   │
+    │  }                                      │
+    └─────────────────────────────────────────┘
+         │
+         ↓
+    User Receives Response
+
+
+ENVIRONMENT CONFIGURATION
+═════════════════════════════════════════════════════════════════════════════
+
+    Railway Service
+    │
+    ├─ GOOGLE_API_KEY
+    │  └─ Used by: Google Gemini API
+    │     Purpose: Authenticate API requests
+    │
+    ├─ CHROMA_API_KEY
+    │  └─ Used by: Chroma Cloud Client
+    │     Purpose: Authenticate with Chroma Cloud
+    │     Value: ck-78FYpMeYchrNdWQyvPadg4HXfWXygWCBtCiyUiZz9X6t
+    │
+    ├─ CHROMA_TENANT_ID
+    │  └─ Used by: Chroma Cloud Client
+    │     Purpose: Identify tenant
+    │     Value: 632db25e-e86a-4b90-808a-a221877d15d1
+    │
+    ├─ CHROMA_COLLECTION
+    │  └─ Used by: Chroma Cloud Client
+    │     Purpose: Specify collection name
+    │     Value: pakistan_law
+    │
+    ├─ PORT
+    │  └─ Used by: FastAPI/Uvicorn
+    │     Purpose: Server port
+    │     Value: 8000
+    │
+    ├─ HOST
+    │  └─ Used by: FastAPI/Uvicorn
+    │     Purpose: Server host
+    │     Value: 0.0.0.0
+    │
+    └─ ENVIRONMENT
+       └─ Used by: Application logging
+          Purpose: Environment name
+          Value: production
+
+
+MONITORING & LOGGING
+═════════════════════════════════════════════════════════════════════════════
+
+    Railway Dashboard
+    │
+    ├─ Logs Tab
+    │  ├─ Build logs
+    │  ├─ Deployment logs
+    │  ├─ Application logs
+    │  └─ Error logs
+    │
+    ├─ Metrics Tab
+    │  ├─ CPU Usage
+    │  ├─ Memory Usage
+    │  ├─ Network I/O
+    │  └─ Request Count
+    │
+    ├─ Deployments Tab
+    │  ├─ Current deployment
+    │  ├─ Previous deployments
+    │  └─ Rollback option
+    │
+    └─ Settings Tab
+       ├─ Service configuration
+       ├─ Domain settings
+       └─ Environment variables
+
+
+SCALING & PERFORMANCE
+═════════════════════════════════════════════════════════════════════════════
+
+    Current Configuration
+    ├─ CPU: 0.5 vCPU (Railway default)
+    ├─ Memory: 512MB (Railway default)
+    ├─ Restart: ON_FAILURE
+    ├─ Max Retries: 3
+    └─ Health Check: Every 30 seconds
+
+    If Performance Issues Occur
+    ├─ Check Metrics
+    │  ├─ CPU usage
+    │  ├─ Memory usage
+    │  └─ Response times
+    │
+    ├─ Optimize
+    │  ├─ Cache queries
+    │  ├─ Optimize database
+    │  └─ Reduce TOP_K if needed
+    │
+    └─ Scale
+       ├─ Upgrade Railway plan
+       ├─ Increase CPU allocation
+       └─ Increase Memory allocation
+
+
+ERROR HANDLING & RECOVERY
+═════════════════════════════════════════════════════════════════════════════
+
+    Service Crash
+    │
+    ├─ Detection: Health check fails
+    │
+    ├─ Action: Auto-restart (ON_FAILURE)
+    │
+    ├─ Retry: Up to 3 times
+    │
+    └─ Monitoring: Check logs for root cause
+
+    Deployment Failure
+    │
+    ├─ Detection: Build or deploy error
+    │
+    ├─ Action: Deployment marked as failed
+    │
+    ├─ Recovery: Rollback to previous deployment
+    │
+    └─ Investigation: Check build logs
+
+
+SECURITY CONSIDERATIONS
+═════════════════════════════════════════════════════════════════════════════
+
+    ✅ Environment Variables
+    │  └─ Stored securely in Railway
+    │     └─ Not visible in code
+    │     └─ Not in version control
+
+    ✅ HTTPS
+    │  └─ Automatic SSL/TLS
+    │     └─ All traffic encrypted
+
+    ✅ API Keys
+    │  └─ Stored as environment variables
+    │     └─ Never hardcoded
+    │     └─ Rotatable
+
+    ✅ Network
+    │  └─ Railway provides DDoS protection
+    │     └─ Rate limiting available
+    │     └─ Firewall rules configurable
+
+
+DEPLOYMENT TIMELINE
+═════════════════════════════════════════════════════════════════════════════
+
+    T+0:00   GitHub push
+    T+0:30   Webhook triggered
+    T+1:00   Build started
+    T+2:00   Dependencies installed
+    T+3:00   Application copied
+    T+4:00   Build complete
+    T+4:30   Service starting
+    T+5:00   Health check passed
+    T+5:30   Service ready
+    T+6:00   Ready for requests
+
+    Total: ~6 minutes from push to ready
+
+
+COST BREAKDOWN
+═════════════════════════════════════════════════════════════════════════════
+
+    Railway Free Tier
+    ├─ $5/month credit
+    ├─ Typical usage: $5-15/month
+    └─ Pay-as-you-go after credit
+
+    Estimated Monthly Costs
+    ├─ Compute: $3-8/month
+    ├─ Storage: $0-2/month
+    └─ Network: $0-1/month
+    └─ Total: $5-15/month
+
+    vs Render
+    ├─ Minimum: $7/month
+    ├─ Includes: 0.5 CPU, 512MB RAM
+    └─ Overage: $0.25/hour per resource
+
+
+COMPARISON WITH RENDER
+═════════════════════════════════════════════════════════════════════════════
+
+    Render Configuration (render.yaml)
+    ├─ services:
+    │  └─ type: web
+    │     ├─ name: lawmate-api
+    │     ├─ runtime: python
+    │     ├─ buildCommand: pip install -r requirements.txt
+    │     ├─ startCommand: python backend_api.py
+    │     └─ envVars: [...]
+
+    Railway Configuration (railway.json)
+    ├─ build:
+    │  └─ builder: DOCKERFILE
+    ├─ deploy:
+    │  ├─ startCommand: python backend_api.py
+    │  ├─ healthcheckPath: /health
+    │  └─ restartPolicyType: ON_FAILURE
+
+    Key Differences
+    ├─ Build: YAML vs Dockerfile
+    ├─ Config: Separate file vs Dashboard
+    ├─ Deployment: Webhook vs GitHub integration
+    └─ Cost: $7/month vs $5/month credit
+
+
+═════════════════════════════════════════════════════════════════════════════
+                            END OF ARCHITECTURE
+═════════════════════════════════════════════════════════════════════════════

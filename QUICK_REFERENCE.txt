@@ -1,0 +1,115 @@
+╔════════════════════════════════════════════════════════════════╗
+║     PAKISTANI LEGAL RAG ASSISTANT - PDF GENERATION            ║
+║                    QUICK REFERENCE                             ║
+╚════════════════════════════════════════════════════════════════╝
+
+📦 INSTALLATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Windows:  install_pdf_support.bat
+  Manual:   pip install reportlab
+
+🚀 COMMANDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Ask Question:
+    python chroma_test.py "your legal question here"
+  
+  Generate PDF (Template):
+    python chroma_test.py --generate-pdf
+  
+  Generate PDF (Full AI Content):
+    python chroma_test.py --generate-pdf full
+  
+  View COMPLETE History:
+    python chroma_test.py --show-history
+  
+  Clear History:
+    python chroma_test.py --clear-history
+  
+  Help:
+    python chroma_test.py --help
+
+💡 QUICK START
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. python demo_pdf_generation.py        (create test data)
+  2. python chroma_test.py --generate-pdf (generate PDF)
+  3. Open: legal_document_breach_notice_[timestamp].pdf
+
+📋 EXAMPLE WORKFLOWS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Workflow 1: Template-Based Notice
+    Step 1: python chroma_test.py "Draft breach notice for PKR 500,000"
+    Step 2: python chroma_test.py --generate-pdf
+    Step 3: Open legal_document_breach_notice_[timestamp].pdf
+  
+  Workflow 2: Full AI Analysis
+    Step 1: python chroma_test.py "Analyze breach of contract law"
+    Step 2: python chroma_test.py --generate-pdf full
+    Step 3: Open legal_analysis_full_[timestamp].pdf
+  
+  Workflow 3: View Complete History
+    python chroma_test.py --show-history
+    (Shows FULL answers, not truncated!)
+
+🎯 SMART EXTRACTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  System automatically extracts:
+    ✓ Party names
+    ✓ Amounts (PKR, Rs, rupees)
+    ✓ Dates (contract, due dates)
+    ✓ Addresses
+    ✓ Breach details
+    ✓ Contract descriptions
+
+📄 DOCUMENT TYPES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  • breach_notice  - Breach of Contract Notice (default)
+  • legal_notice   - General Legal Notice
+  • agreement      - Contract/Agreement Draft
+
+💰 SUPPORTED FORMATS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Amounts:  PKR 500,000 | Rs. 500,000 | 500000 rupees
+  Dates:    January 15, 2024 | 15/01/2024 | 15-01-2024
+  Names:    Ahmad Khan | Bilal Ahmed | [Capitalized Names]
+
+✅ WHAT'S NEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓ Automatic PDF generation
+  ✓ Smart data extraction from chat
+  ✓ Professional legal document formatting
+  ✓ Multiple document templates
+  ✓ Context-aware filling
+  ✓ Ready-to-use output
+
+✅ WHAT'S UNCHANGED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓ All existing RAG functionality
+  ✓ ChromaDB queries
+  ✓ Gemini API integration
+  ✓ Chat history feature
+  ✓ Evidence retrieval
+  ✓ All previous commands
+
+📚 DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Full Guide:        PDF_GENERATION_GUIDE.md
+  Implementation:    IMPLEMENTATION_SUMMARY.md
+  This Reference:    QUICK_REFERENCE.txt
+
+🐛 TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Error: "reportlab not installed"
+    → Run: pip install reportlab
+  
+  No data extracted?
+    → Mention specific details in your questions
+    → System will use placeholders for missing data
+  
+  PDF not generating?
+    → Check write permissions
+    → Verify reportlab installation
+    → Check console for error messages
+
+═══════════════════════════════════════════════════════════════
+  Ready to use! Install reportlab and start generating PDFs!
+═══════════════════════════════════════════════════════════════

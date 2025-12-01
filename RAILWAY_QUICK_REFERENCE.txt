@@ -1,0 +1,218 @@
+================================================================================
+                    RAILWAY DEPLOYMENT QUICK REFERENCE
+================================================================================
+
+DEPLOYMENT URL FORMAT:
+  https://lawmate-new.up.railway.app (or similar)
+
+================================================================================
+ENVIRONMENT VARIABLES TO SET IN RAILWAY DASHBOARD
+================================================================================
+
+GOOGLE_API_KEY=your_google_api_key_here
+CHROMA_API_KEY=ck-78FYpMeYchrNdWQyvPadg4HXfWXygWCBtCiyUiZz9X6t
+CHROMA_TENANT_ID=632db25e-e86a-4b90-808a-a221877d15d1
+CHROMA_COLLECTION=pakistan_law
+PORT=8000
+HOST=0.0.0.0
+ENVIRONMENT=production
+
+================================================================================
+QUICK DEPLOYMENT STEPS
+================================================================================
+
+1. Go to https://railway.app
+2. Click "New Project"
+3. Select "Deploy from GitHub"
+4. Select your repository
+5. Click "Deploy"
+6. Go to "Variables" tab
+7. Add all environment variables above
+8. Wait for deployment to complete
+9. Check "Logs" tab for status
+10. Test endpoints
+
+================================================================================
+API ENDPOINTS
+================================================================================
+
+Health Check:
+  GET /health
+  Response: {"status": "healthy"}
+
+Status:
+  GET /api/status
+  Response: {"status": "running", "chroma_connected": true, ...}
+
+Chat:
+  POST /api/chat
+  Body: {"message": "Your question", "mode": "detailed"}
+
+History:
+  GET /api/history
+  Response: {"history": [...]}
+
+Clear History:
+  DELETE /api/history/clear
+
+Generate PDF:
+  POST /api/generate-pdf
+  Response: PDF file
+
+================================================================================
+TESTING COMMANDS
+================================================================================
+
+# Test health
+curl https://YOUR_RAILWAY_URL/health
+
+# Test status
+curl https://YOUR_RAILWAY_URL/api/status
+
+# Test chat
+curl -X POST https://YOUR_RAILWAY_URL/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is the law?"}'
+
+# Get history
+curl https://YOUR_RAILWAY_URL/api/history
+
+# Clear history
+curl -X DELETE https://YOUR_RAILWAY_URL/api/history/clear
+
+================================================================================
+MONITORING
+================================================================================
+
+View Logs:
+  Railway Dashboard → Your Service → Logs tab
+
+View Metrics:
+  Railway Dashboard → Your Service → Metrics tab
+
+Check Deployments:
+  Railway Dashboard → Your Service → Deployments tab
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Build Fails:
+  → Check Dockerfile syntax
+  → Verify requirements.txt
+  → Check logs for specific errors
+
+Service Won't Start:
+  → Verify PORT=8000
+  → Check GOOGLE_API_KEY
+  → Verify all environment variables
+
+ChromaDB Connection Error:
+  → Verify CHROMA_API_KEY
+  → Check CHROMA_TENANT_ID
+  → Ensure collection exists
+
+Slow Response:
+  → Check CPU/Memory metrics
+  → Review logs
+  → Upgrade Railway plan
+
+================================================================================
+DOCUMENTATION FILES
+================================================================================
+
+RAILWAY_READY.md                          - Overview and status
+RAILWAY_SETUP.md                          - Step-by-step setup
+MIGRATION_FROM_RENDER_TO_RAILWAY.md       - Migration guide
+RAILWAY_DEPLOYMENT_CHECKLIST.md           - Pre/post deployment checklist
+RAILWAY_TESTING_GUIDE.md                  - Comprehensive testing
+RAILWAY_QUICK_REFERENCE.txt               - This file
+
+================================================================================
+CONFIGURATION FILES
+================================================================================
+
+railway.json                              - Railway configuration
+Dockerfile                                - Docker build configuration
+requirements.txt                          - Python dependencies
+.env.example                              - Environment variables template
+
+================================================================================
+KEY DIFFERENCES FROM RENDER
+================================================================================
+
+Feature              Render                Railway
+Config File          render.yaml           railway.json
+Build System         YAML-based            Dockerfile
+Deployment           Webhook               GitHub integration
+Environment          render.yaml           Dashboard
+Cost                 $7/month minimum      $5/month credit
+Performance          Good                  Better
+Monitoring           Basic                 Advanced
+
+================================================================================
+COST COMPARISON
+================================================================================
+
+Render:
+  - Minimum: $7/month
+  - Includes: 0.5 CPU, 512MB RAM
+  - Overage: $0.25/hour per resource
+
+Railway:
+  - Free tier: $5/month credit
+  - Paid: Pay-as-you-go
+  - Typical usage: $5-15/month
+
+================================================================================
+SUPPORT
+================================================================================
+
+Railway Docs:     https://docs.railway.app
+Railway Discord:  https://discord.gg/railway
+GitHub Issues:    Report in your repository
+
+================================================================================
+DEPLOYMENT CHECKLIST
+================================================================================
+
+Pre-Deployment:
+  ☐ Code pushed to GitHub
+  ☐ Dockerfile exists
+  ☐ requirements.txt complete
+  ☐ backend_api.py configured
+
+During Deployment:
+  ☐ Create Railway project
+  ☐ Set environment variables
+  ☐ Monitor build logs
+  ☐ Wait for deployment complete
+
+Post-Deployment:
+  ☐ Test health endpoint
+  ☐ Test status endpoint
+  ☐ Test chat endpoint
+  ☐ Test history endpoint
+  ☐ Check metrics
+  ☐ Review logs
+
+================================================================================
+ESTIMATED TIME
+================================================================================
+
+Create Project:     2 minutes
+Set Variables:      3 minutes
+Deploy:             5-10 minutes
+Test:               5 minutes
+Total:              15-20 minutes
+
+================================================================================
+STATUS: ✅ READY FOR DEPLOYMENT
+================================================================================
+
+Your application is fully configured and ready to deploy to Railway.
+Follow the steps above to get started.
+
+For detailed information, see the documentation files listed above.
+
+================================================================================

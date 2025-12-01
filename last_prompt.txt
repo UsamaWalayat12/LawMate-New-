@@ -1,0 +1,59 @@
+You are an expert Pakistani legal assistant. Use ONLY the evidence below to answer the QUESTION. Cite each factual/interpretive statement inline using the format [doc_index]. If the evidence does not support a requested item, say 'insufficient evidence' for that item.
+
+QUESTION: How to draft a notice for breach of contract (payment overdue)?
+
+[1] doc_id=8dcfbe88d7e6d0e32e1b3427bba083cdfff4dba0 source=[REDACTED]
+mortgagor demanding the payment of the mortgage money outstanding within thirty days from service of the final notice on the customer. mortgagor demanding the payment of the mortgage money outstanding within thirty days from service of the final notice on the customer. 3. (3) When a financial institution serves a final notice of demand, all powers of the mortgagor in regard to recovery of rents and profits from the mortgaged property shall stand transferred to the financial institution until such notice is withdrawn and it shall be the duty of the mortgagor to pay all rents and profits from the mortgaged property to the financial institution. Provided that where the mortgaged property is in possession of any tenant or occupier, other than the mortgagor, it shall be the duty of such tenant or occupier, on receipt of notice in this behalf from the financial institution, to pay to the financial institution the rent of lease money or other consideration agreed with the mortgagor. (3) When a financial institution serves a notice of demand, all the powers of the mortgagor in regard to recovery of rents and profits from the final mortgaged property shall stand transferred to the financial
+
+
+[2] doc_id=17f9b845e9f8bd79628f7c269b379582d7836891 source=[REDACTED]
+to take in and convey, from 1[Karachi] to the Mauritius, a cargo to be provided by A, B receiving a certain freight for its conveyance. A does not provide any cargo for the ship. A cannot claim the performance of B’s promise, and must make compensation to B for the loss which B sustains by the non-performance of the contract. (b) A contracts with B to execute certain builder’s work for a fixed price. B supplying the scaffolding and timber necessary for the work. B refuses to furnish any scaffolding or timber, and he work cannot be executed. A need 1Subs. by the Federal Laws (Revision and Declaration) Ordinance, 1981 (XXVII of 1981), s. 3 and 2nd Sch. not execute the work, and B is bound to make compensation to A for any loss caused to him by the non-performance of the contract. (c) A contracts with B to deliver to him, at a specified price, certain merchandise on board a ship which cannot arrive for a month, and B engages to pay for the merchandise within a week from the date of the contract. B does not pay within the week. A’s promise to deliver need not be performed, and B must make compensation. (d) A promises B to sell him one hundred bales of merchandise, to be delivered next
+
+
+[3] doc_id=a65a4737ffd2796435f551e49cf277e0b53e0591 source=[REDACTED]
+which need not be performed 62. Effect of novation, rescission and alteration of contract 63. Promisee may dispense with or remit performance of promise 64. Consequences of rescission of voidable contract 65. Obligation of person who has received advantage under void agreement or contract that becomes void 66. Mode of communicating or revoking rescission of voidable contract 67. Effect of neglect of promisee to afford promisor reasonable facilities for performance CHAPTER V OF CERTAIN RELATIONS RESEMBLING THOSE CREATED BY CONTRACT 68. Claim for necessaries supplied to person incapable of contracting, or on his account 69. Reimbursement of person paying money due by another in payment of which he is interested 70. Obligation of person enjoying benefit of non-gratuitous act 71. Responsibility of finder of goods 72. Liability of person to whom money is paid or thing delivered by mistake or under coercion _______ CHAPTER VI OF THE CONSEQUENCES OF BREACH OF CONTRACT 73. Compensation for loss or damage caused by breach of contract Compensation for failure to discharge obligation resembling those created by contract 74. Compensation for breach of contract where penalty stipulated for 75.
+
+
+[4] doc_id=ec2b5ab9fac878221d75afc541808a494d8fd57d source=[REDACTED]
+to let it. A is informed of the contract between B and C. A builds the house so badly that, before the first of January, if falls down and has to be rebuilt by B, who, in consequence, loses the rent which he was to have received from C, and is obliged to make compensation to C for the breach of his contract. A must make compensation to B for the cost of rebuilding the house, for the rent lost, and for the compensation made to C. (m) A sells certain merchandise to B, warranting it to be of a particular quality, and B, in reliance upon this warranty, sells it to C with a similar warranty. The goods prove to be not according to the warranty, and B becomes liable to pay C a sum of money by way of compensation. B is entitled to be reimbursed this sum by A. (n) A contracts to pay a sum of money to B on a day specified. A does not pay the money on that day; B, in consequence of not receiving the money on that day, is unable to pay his debts, and is totally ruined. A is not liable to make good to B anything except the principal sum he contracted to pay, together with interest up to the day of payment. (o) A contracts to deliver 50 maunds of saltpeter to B on the first of January, at a cert
+
+
+[5] doc_id=9d6ce94889ded08429143322e47bf5d91c47df0b source=[REDACTED]
+decree is otherwise adjusted in whole or in part to the satisfaction of the decree-holder, the decree-holder shall certify such payment or adjustment to the Court whose duty it is to execute the decree, and the Court shall record the same accordingly. (2). The judgment-debtor also may inform the Court of such payment or adjustment, and apply to the Court to issue a notice to the decree- holder to show cause, on a day to be fixed by the Court, why such payment or adjustment should not be recorded as certified; and if after service of such notice, the decree-holder fails to show cause why the payment or adjustment should not be recorded as certified, the Court shall record the same accordingly. (3) 1[Any payment not made in the manner provided in rule 1 or any adjustment not made in writing shall not be recognized by the Court executing the decree.] 8. The aforesaid provisions are plainly worded and contain hardly any ambiguity. As per Order XXI Rule 1(b) of the Code, plea of out of Court payment is not acceptable unless payment is made through bank or by postal money-order or it is evidenced in writing and signed by the decree-holder or his duly authorized agent. 9. Rule 2(1) of Ord
+
+
+Produce the final answer with the following exact sections and headings:
+
+1) SHORT ANSWER (one paragraph): concise direct answer to the question.
+
+2) OVERVIEW (one paragraph): what Section/issue covers and immediate legal context.
+
+3) GROUNDS / RULES (numbered bullets): list the legal grounds, short explanation; cite evidence for each ground.
+
+4) EVIDENCE (numbered): for each evidence item provided, give a one-line descriptor and the excerpted fact used, with citation [doc_index].
+
+5) JUDGMENT SUMMARIES (for any judgment evidence): for each judgment evidence, produce: Case details (parties, court, citation if found), 1-paragraph factual summary, Holding/Result (1 line), and Reasoning (2 bullets). Cite the document for each sentence.
+
+6) STATUTORY TEXT (if included in evidence): quote short relevant statutory phrases (<= 25 words) and cite. If not in evidence, state 'statute not found in supplied evidence'.
+
+7) PRACTICAL TEMPLATE or DRAFT (if question asks to draft): Provide a ready-to-use template/format with placeholders.
+
+For any evidence that is a judgment, explicitly list: Judge(s), Court, Date of judgment, and citation (if present) using only the supplied evidence. If any of these are not present in the evidence, state 'insufficient evidence' for that field.
+
+Make the language clear, professional and do not add extraneous commentary. Use only evidence provided; do not invent case names, citations, or facts.
+
+
+
+CHAT HISTORY (for context):
+USER: Test message for PDF generation
+
+ASSISTANT: Test response
+
+USER: I need employment contract for Sarah Ahmed as manager, salary PKR 80,000
+
+ASSISTANT: 1) SHORT ANSWER
+The provided evidence does not contain a template or draft for an employment contract for Sarah Ahmed as a manager, nor does it specify a salary of PKR 80,000. The documents primarily discuss general terms and conditions related to contract appointments, extensions, and termination within a Pakistani legal context.
+
+2) OVERVIEW
+The supplied legal excerpts primarily pertain to the general principles governing contract appointments in Pakistan. They detail aspects such as the tenur
+

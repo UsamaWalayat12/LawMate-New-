@@ -1,0 +1,53 @@
+1) SHORT ANSWER
+To draft a notice for breach of contract due to payment being overdue, based on the provided evidence, it should be framed as a "final notice of demand" [1]. This notice should clearly demand the payment of the outstanding amount within a specified timeframe, such as thirty days from the date of service [1]. Failure to pay a sum of money on a specified day constitutes a breach of contract [4, 2], and compensation for such a breach typically involves the principal sum along with interest up to the day of payment [4]. The evidence does not provide a comprehensive general template for drafting such a notice beyond these core elements.
+
+2) OVERVIEW
+The provided evidence outlines that the failure to make a payment by a specified date constitutes a breach of contract [2, 4]. In such situations, the aggrieved party is entitled to compensation, usually comprising the principal sum and interest [4, 3]. The concept of a "final notice of demand" is supported, especially in contexts like mortgage payments, where payment is demanded within a set period, such as thirty days [1]. However, a specific, generalized template for drafting such a notice for any breach of contract due to overdue payment is not explicitly provided.
+
+3) GROUNDS / RULES
+*   Failure to pay a sum of money on a specified day constitutes a breach of contract [4, 2].
+*   When a contract is breached due to non-payment, the party in default must make compensation for the loss sustained [2].
+*   Compensation for the breach of a contract to pay a sum of money on a specified day is generally limited to the principal sum contracted to be paid, together with interest up to the day of payment [4, 3].
+*   A "final notice of demand" can be served, requiring the payment of outstanding money within a specific period, such as thirty days from service [1].
+
+4) EVIDENCE
+1.  **Mortgage payment demand notice details**: A mortgagor can be served a final notice of demand requiring payment of outstanding mortgage money within thirty days from service. Upon service, powers of the mortgagor regarding rent recovery transfer to the financial institution [1].
+2.  **Examples of contract breach and compensation**: Illustrates cases where a party fails to perform their contractual obligation, such as not providing cargo, not furnishing materials, or not paying within a week, leading to the other party being relieved of their obligations and the defaulting party making compensation [2].
+3.  **Consequences of breach of contract**: Lists chapters related to contract law, including the consequence of breach of contract and provisions for compensation for loss or damage caused by such breach [3].
+4.  **Compensation for non-payment**: Clarifies that if a sum of money is not paid on a specified day, the defaulting party is liable to make good the principal sum and interest up to the day of payment [4].
+5.  **Court recognition of payments**: Addresses the procedure for certifying out-of-court payments or adjustments to a court executing a decree, requiring payment through bank, postal money-order, or written adjustment signed by the decree-holder [5].
+
+5) JUDGMENT SUMMARIES
+Insufficient evidence. The provided documents are excerpts from legal texts or statutes, not judgment summaries.
+
+6) STATUTORY TEXT
+*   "mortgagor demanding the payment of the mortgage money outstanding within thirty days from service of the final notice on the customer." [1]
+*   "CHAPTER VI OF THE CONSEQUENCES OF BREACH OF CONTRACT 73. Compensation for loss or damage caused by breach of contract" [3]
+*   "A does not pay the money on that day; B...A is not liable to make good to B anything except the principal sum he contracted to pay, together with interest up to the day of payment." [4]
+*   "Any payment not made in the manner provided in rule 1 or any adjustment not made in writing shall not be recognized by the Court executing the decree." [5]
+
+7) PRACTICAL TEMPLATE or DRAFT
+Based on the provided evidence, a general template for a notice of breach of contract due to payment overdue cannot be comprehensively drafted. However, the evidence from the context of a "final notice of demand" for mortgage money [1] allows for the construction of the following essential elements:
+
+**[Your Company Letterhead/Details]**
+
+**[Date]**
+
+**[Recipient's Name]**
+**[Recipient's Address]**
+
+**Subject: FINAL NOTICE OF DEMAND for Overdue Payment**
+
+Dear [Recipient's Name],
+
+This serves as a final notice of demand for the payment of the outstanding amount of [Specify Overdue Amount, e.g., "PKR X,XXX,XXX"] under [Reference to the original contract/agreement, if any, though not explicitly stated in evidence] which was due on [Original Due Date].
+
+You are hereby required to make the payment of the aforementioned outstanding amount within **thirty (30) days** from the date of service of this notice.
+
+Please note that failure to pay the sum of money on the specified day constitutes a breach of contract, which may result in further action to recover the principal sum together with applicable interest up to the day of payment, as provided by law.
+
+Sincerely,
+
+**[Your Name/Authorized Signatory]**
+**[Your Title]**
+**[Your Company Name]**

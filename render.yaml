@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: lawmate-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backend_api.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: PORT
+        value: 8000
+      - key: PYTHONUNBUFFERED
+        value: true
+    healthCheckPath: /health
+    healthCheckInterval: 30
+    healthCheckTimeout: 10
+    maxDuration: 60

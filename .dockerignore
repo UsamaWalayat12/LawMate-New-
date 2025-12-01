@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+docs/
+
+# Development files
+.env
+.vscode/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Flutter files (not needed for backend)
+New-Legal-Connect/
+*.apk
+*.aab
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# Local Database
+ChromaDB/
+venv/
+.venv/

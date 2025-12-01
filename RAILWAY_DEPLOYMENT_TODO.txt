@@ -1,0 +1,177 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                     RAILWAY DEPLOYMENT TODO LIST                           ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+BEFORE DEPLOYMENT
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Code is committed to GitHub
+  [ ] All changes pushed to main branch
+  [ ] Dockerfile is in project root
+  [ ] railway.json is in project root
+  [ ] requirements.txt is complete
+  [ ] .env.example has all variables documented
+  [ ] No sensitive data in code
+
+DEPLOYMENT SETUP
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Create Railway account at https://railway.app
+  [ ] Go to https://railway.app
+  [ ] Click "New Project"
+  [ ] Select "Deploy from GitHub"
+  [ ] Connect GitHub account (if not already connected)
+  [ ] Select your repository
+  [ ] Click "Deploy"
+  [ ] Wait for initial build to complete
+
+ENVIRONMENT VARIABLES
+═════════════════════════════════════════════════════════════════════════════
+
+  In Railway Dashboard > Your Service > Variables tab, add:
+
+  [ ] GOOGLE_API_KEY = [your_google_api_key]
+  [ ] CHROMA_API_KEY = ck-78FYpMeYchrNdWQyvPadg4HXfWXygWCBtCiyUiZz9X6t
+  [ ] CHROMA_TENANT_ID = 632db25e-e86a-4b90-808a-a221877d15d1
+  [ ] CHROMA_COLLECTION = pakistan_law
+  [ ] PORT = 8000
+  [ ] HOST = 0.0.0.0
+  [ ] ENVIRONMENT = production
+
+DEPLOYMENT VERIFICATION
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Check Logs tab - no errors
+  [ ] Deployment shows "successful"
+  [ ] Service is "running"
+  [ ] Note the Railway URL (e.g., https://lawmate-new.up.railway.app)
+
+ENDPOINT TESTING
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Test health endpoint
+      curl https://YOUR_RAILWAY_URL/health
+
+  [ ] Test status endpoint
+      curl https://YOUR_RAILWAY_URL/api/status
+
+  [ ] Test chat endpoint
+      curl -X POST https://YOUR_RAILWAY_URL/api/chat \
+        -H "Content-Type: application/json" \
+        -d '{"message": "What is the law?"}'
+
+  [ ] Test history endpoint
+      curl https://YOUR_RAILWAY_URL/api/history
+
+  [ ] Test PDF generation
+      curl -X POST https://YOUR_RAILWAY_URL/api/generate-pdf
+
+MONITORING SETUP
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Check Logs tab regularly
+  [ ] Monitor Metrics tab (CPU, Memory, Network)
+  [ ] Review Deployments tab for history
+  [ ] Set up alerts (optional)
+
+DOCUMENTATION UPDATES
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Update README.md with Railway URL
+  [ ] Update API_DOCUMENTATION.md if needed
+  [ ] Share new URL with team/users
+  [ ] Document any custom configurations
+
+CLEANUP (OPTIONAL)
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Delete Render project (if no longer needed)
+  [ ] Remove render.yaml from repository
+  [ ] Archive Render documentation
+  [ ] Remove Render-related scripts
+
+FINAL VERIFICATION
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] All endpoints responding correctly
+  [ ] No errors in logs
+  [ ] Metrics look healthy
+  [ ] Response times acceptable
+  [ ] ChromaDB connection working
+  [ ] Gemini API integration working
+  [ ] PDF generation working
+  [ ] Chat history working
+
+POST-DEPLOYMENT
+═════════════════════════════════════════════════════════════════════════════
+
+  [ ] Notify users of new URL
+  [ ] Update bookmarks/links
+  [ ] Monitor for first 24 hours
+  [ ] Check logs for any issues
+  [ ] Verify performance metrics
+  [ ] Test with real user queries
+
+TROUBLESHOOTING NOTES
+═════════════════════════════════════════════════════════════════════════════
+
+  If build fails:
+  → Check Dockerfile syntax
+  → Verify requirements.txt
+  → Check logs for specific errors
+  → Ensure all files are committed
+
+  If service won't start:
+  → Verify PORT is 8000
+  → Check GOOGLE_API_KEY is valid
+  → Verify all environment variables are set
+  → Check logs for error messages
+
+  If ChromaDB connection fails:
+  → Verify CHROMA_API_KEY
+  → Check CHROMA_TENANT_ID
+  → Ensure collection exists
+  → Check network connectivity
+
+  If slow performance:
+  → Check CPU/Memory metrics
+  → Review logs for bottlenecks
+  → Optimize queries
+  → Upgrade Railway plan if needed
+
+SUPPORT RESOURCES
+═════════════════════════════════════════════════════════════════════════════
+
+  Railway Docs:       https://docs.railway.app
+  Railway Discord:    https://discord.gg/railway
+  GitHub Issues:      Report issues in your repository
+  API Documentation:  See API_DOCUMENTATION.md
+
+═════════════════════════════════════════════════════════════════════════════
+
+QUICK REFERENCE
+
+  Railway URL:        https://YOUR_RAILWAY_URL
+  Dashboard:          https://railway.app
+  Logs:               Railway Dashboard > Service > Logs
+  Metrics:            Railway Dashboard > Service > Metrics
+  Variables:          Railway Dashboard > Service > Variables
+  Deployments:        Railway Dashboard > Service > Deployments
+
+═════════════════════════════════════════════════════════════════════════════
+
+ESTIMATED TIMELINE
+
+  Setup:              15-20 minutes
+  First deployment:   5-10 minutes
+  Testing:            10-15 minutes
+  Total:              30-45 minutes
+
+═════════════════════════════════════════════════════════════════════════════
+
+STATUS: Ready for deployment
+
+Once all items are checked, your LawMate application will be successfully
+deployed on Railway with automatic GitHub integration and monitoring.
+
+═════════════════════════════════════════════════════════════════════════════
