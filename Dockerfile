@@ -8,6 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -16,8 +17,12 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application files
-COPY . .
+# Copy only necessary application files (exclude large directories)
+COPY backend_api.py .
+COPY upload_to_chroma_cloud.py .
+COPY upload_documents_to_chroma.py .
+COPY .env.example .
+COPY *.md ./
 
 # Create necessary directories
 RUN mkdir -p ChromaDB
