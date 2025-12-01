@@ -4,25 +4,25 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies (minimal)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
 
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies with no cache
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip cache purge
 
-# Copy only necessary application files (exclude large directories)
+# Copy only essential application files
 COPY backend_api.py .
 COPY upload_to_chroma_cloud.py .
 COPY upload_documents_to_chroma.py .
-COPY .env.example .
-COPY *.md ./
 
 # Create necessary directories
 RUN mkdir -p ChromaDB
