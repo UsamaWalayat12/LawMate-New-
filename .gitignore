@@ -30,3 +30,16 @@ node_modules/
 # Large DB files - TOO LARGE FOR RAILWAY UPLOAD (500MB limit)
 # Use Railway Volume or Cloud Database instead
 ChromaDB/
+
+# Flutter directories (keep Flutter app separate from backend)
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+android/
+ios/
+windows/
+linux/
+macos/
+build/
+New-Legal-Connect/.dart_tool/
+New-Legal-Connect/build/
