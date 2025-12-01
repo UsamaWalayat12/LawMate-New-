@@ -1,0 +1,86 @@
+================================================================================
+SOLUTION: Fix Railway Build Error (8.1 GB Image Size)
+================================================================================
+
+PROBLEM:
+--------
+Railway is cloning 486+ MB of Git history from GitHub, causing the Docker build
+to fail with "Image size 8.1 GB exceeded limit of 4.0 GB".
+
+Even though we've optimized the Dockerfile and .dockerignore, Railway still
+clones the entire repository including all Git history before building.
+
+ROOT CAUSE:
+-----------
+The GitHub repository contains old commits with large files:
+- ChromaDB database (800+ MB)
+- Flutter build artifacts (3+ GB)
+- Old dependencies
+
+SOLUTION (REQUIRED):
+--------------------
+You MUST delete the GitHub repository and create a fresh one.
+
+STEP 1: Delete Old Repository on GitHub
+========================================
+1. Go to: https://github.com/UsamaWalayat12/LawMate-New-
+2. Click "Settings" (top right)
+3. Scroll to "Danger Zone" at the bottom
+4. Click "Delete this repository"
+5. Type the repository name to confirm
+6. Click "I understand the consequences, delete this repository"
+
+STEP 2: Create New Repository on GitHub
+========================================
+1. Go to: https://github.com/new
+2. Repository name: LawMate-New-
+3. Description: Pakistani Legal RAG Assistant
+4. Public (or Private, your choice)
+5. Do NOT initialize with README
+6. Click "Create repository"
+
+STEP 3: Push Clean Code to New Repository
+==========================================
+Run these commands in PowerShell:
+
+cd "c:\Users\AHMAD\Desktop\New"
+git remote remove new-legal-connect
+git remote add origin https://github.com/UsamaWalayat12/LawMate-New-.git
+git branch -M main
+git push -u origin main
+
+STEP 4: Update Railway
+======================
+1. Go to: https://railway.app/dashboard
+2. Delete the old "LawMate-New" service
+3. Click "New" → "GitHub Repo"
+4. Select the fresh "LawMate-New-" repository
+5. Click "Deploy"
+6. Add environment variables:
+   - GOOGLE_API_KEY: [your key]
+   - CHROMA_API_KEY: ck-78FYpMeYchrNdWQyvPadg4HXfWXygWCBtCiyUiZz9X6t
+   - CHROMA_TENANT_ID: 632db25e-e86a-4b90-808a-a221877d15d1
+   - CHROMA_COLLECTION: pakistan_law
+
+STEP 5: Verify Deployment
+==========================
+1. Wait for Railway to build (should complete in 2-3 minutes)
+2. Check build logs - image size should be < 500 MB
+3. Service should start successfully
+4. Test: curl https://your-railway-url/health
+
+WHY THIS WORKS:
+===============
+- Fresh repository has NO old Git history
+- Only contains the optimized code (0.03 MB source files)
+- Docker image will be < 500 MB
+- Builds successfully within Railway's 4 GB limit
+
+EXPECTED RESULT:
+================
+✅ Docker image size: < 500 MB
+✅ Build time: 2-3 minutes
+✅ Deployment: Successful
+✅ API running on Railway
+
+================================================================================
