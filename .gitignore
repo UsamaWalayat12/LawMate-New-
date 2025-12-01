@@ -40,6 +40,6 @@ ios/
 windows/
 linux/
 macos/
+api/
 build/
-New-Legal-Connect/.dart_tool/
-New-Legal-Connect/build/
+New-Legal-Connect/
